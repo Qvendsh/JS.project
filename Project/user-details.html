@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>JS project</title>
+    <link rel="stylesheet" href="stylesheet.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="block">
+    <div id="userid"></div>
+</div>
+<script>
+    function getUserDetails(){
+        let params = new URLSearchParams(window.location.search);
+        let userId = params.get('id');
+        let Id=document.getElementById('userid')
+        fetch(`https://jsonplaceholder.typicode.com/users/${userId}`)
+            .then(res => res.json())
+            .then(user => {
+                for (const key in user) {
+                    let div=document.createElement('div')
+                    Id.appendChild(div)
+                    if(key ==='address' || key ==='company'){
+                       let obj= document.createElement('div')
+                        obj.innerText=`${key}:`
+                        for (const objelement in user[key]) {
+                            let objinobj=document.createElement('div')
+                            if(objelement==='geo'){
+                                let objin3=document.createElement('div')
+                                objin3.innerText=`${objelement}:`
+                                for (const Gkey in user[key][objelement]) {
+                                    let Gkeyitem=document.createElement('div')
+                                    Gkeyitem.innerText=`**${Gkey}:${user[key][objelement][Gkey]}`
+                                    objin3.appendChild(Gkeyitem)
+                                }
+                                objinobj.appendChild(objin3)
+                            }else {objinobj.innerText=`*${objelement}:${user[key][objelement]}`}
+                            obj.appendChild(objinobj)
+                        }
+                        div.appendChild(obj)
+                    }else{div.innerText=`${key}:${user[key]}`}
+                }
+
+            })
+    }
+    getUserDetails()
+
+
+
+    let DivforButton = document.createElement('div')
+    document.body.appendChild(DivforButton)
+    DivforButton.classList.add('Buttondiv')
+    let button = document.createElement('button')
+    button.innerText = 'Post of current user'
+
+    DivforButton.appendChild(button)
+
+    let postgrid = document.createElement('div')
+    postgrid.classList.add('postgrid')
+    document.body.appendChild(postgrid)
+
+
+
+
+
+    let url = new URL(location.href).searchParams.get('id')
+    let newurl = `https://jsonplaceholder.typicode.com/users/${url}/posts`
+
+    let xxx = false;
+
+    button.addEventListener('click', () => {
+        if (!xxx) {
+            fetch(newurl)
+                .then(value => value.json())
+                .then(posts => {
+                    console.log(posts)
+
+                    for (const post of posts) {
+                        console.log(post)
+
+                        let Posts = document.createElement('div')
+                        Posts.classList.add('postsclass')
+                        let p1 = document.createElement('p')
+                        p1.innerText = `Post: ${post.title}`
+
+                        let a = document.createElement('a')
+                        a.href =  `post-details.html?id=${post.id}`
+                        a.innerText = 'more...';
+
+                        a.addEventListener("click", () => {
+                            location.href =  `post-details.html?id=${post.id}`
+                        })
+                        Posts.append(p1, a)
+                        postgrid.appendChild(Posts)
+                    }
+                })
+            xxx = true;
+        } else {
+            postgrid.innerHTML = "";
+            xxx = false;
+        }
+    });
+
+
+
+</script>
+</body>
+</html>

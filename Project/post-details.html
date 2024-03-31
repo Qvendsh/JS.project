@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>JS project</title>
+    <link rel="stylesheet" href="stylesheet.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="Iamsotired">
+   <div id="poststack"></div>
+</div>
+<div class="extremelytired">
+    <div id="commentstack"></div>
+</div>
+<script>
+    function ShowthatPost(){
+        const params = new URLSearchParams(window.location.search);
+        const postId = params.get('id');
+        const poststack = document.getElementById('poststack');
+        fetch(`https://jsonplaceholder.typicode.com/posts/${postId}`)
+            .then(res=> res.json())
+            .then(post=>{
+                let userId=document.createElement('h4')
+                userId.innerText=`User id:${post.userId}`
+                poststack.appendChild(userId)
+                let id=document.createElement('p')
+                id.innerText=`id:${post.id}`
+                poststack.appendChild(id)
+                let title=document.createElement('p')
+                title.innerText=`title:${post.title}`
+                poststack.appendChild(title)
+                let body=document.createElement('p')
+                body.innerText=`body:${post.body}`
+                poststack.appendChild(body)
+
+            })
+    }
+    ShowthatPost()
+
+    function Showthosef_ckingcomments(){
+        const params = new URLSearchParams(window.location.search);
+        const postId = params.get('id');
+        const comments = document.getElementById('commentstack');
+        fetch(`https://jsonplaceholder.typicode.com/posts/${postId}/comments`)
+            .then(res=> res.json())
+            .then(comment => {
+                for (const item of comment) {
+                    let helpme=document.createElement('div')
+                    helpme.classList.add('helpme')
+                    let postid = document.createElement('p')
+                    postid.innerText = `Post Id: ${item.postId}`
+                    helpme.appendChild(postid)
+                    let id = document.createElement('p')
+                    id.innerText = `Id: ${item.id}`
+                    helpme.appendChild(id)
+                    let name = document.createElement('p');
+                    name.innerText = `Name: ${item.name}`
+                    helpme.appendChild(name)
+                    let email = document.createElement('p');
+                    email.innerText = `Email: ${item.email}`
+                    helpme.appendChild(email)
+                    let body = document.createElement('p');
+                    body.innerText = `Body: ${item.body}`
+                    helpme.appendChild(body)
+                    comments.appendChild(helpme)
+                }
+            })
+    }
+    Showthosef_ckingcomments()
+
+
+</script>
+</body>
+</html>
+
+
+

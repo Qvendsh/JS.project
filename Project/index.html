@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>JS project</title>
+    <link rel="stylesheet" href="stylesheet.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="grid"></div>
+<script>
+    const url='https://jsonplaceholder.typicode.com/users'
+    function getUsers(url){
+        const grid=document.getElementsByClassName('grid')[0]
+        fetch(url)
+            .then(res => res.json())
+            .then(users=>{
+                for (const user of users) {
+                    let div=document.createElement('div')
+                    div.classList.add('user')
+
+                    grid.appendChild(div)
+
+                    let name=document.createElement('h3')
+                    name.innerText=`Name: ${user.name}`
+                    let id=document.createElement('h4')
+                    id.innerText=`Id: ${user.id}`
+                    let link=document.createElement('a')
+                    link.innerText= 'See more...'
+                    link.href = ` user-details.html?id=${user.id}`
+
+                    div.append(name,id,link)
+                }
+            })
+    }
+    getUsers(url)
+</script>
+</body>
+</html>
